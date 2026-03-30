@@ -81,8 +81,7 @@ export const featuredCollections = [
     name: 'Wool Blazer',
     rating: '4.9',
     price: 249,
-    image:
-      'https://images.unsplash.com/photo-1593032465171-8bd6fdf2ee97?auto=format&fit=crop&w=900&q=80',
+    image: '/images/black-blazer.svg',
     isNew: true,
   },
   {

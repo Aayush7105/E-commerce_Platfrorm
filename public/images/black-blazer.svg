@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="900" viewBox="0 0 900 900" role="img" aria-labelledby="title desc">
+  <title id="title">Simple Black Blazer</title>
+  <desc id="desc">Minimal black blazer on a dark background.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0d0d0f" />
+      <stop offset="100%" stop-color="#1a1a1f" />
+    </linearGradient>
+    <linearGradient id="cloth" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1a1a1d" />
+      <stop offset="100%" stop-color="#0a0a0c" />
+    </linearGradient>
+    <linearGradient id="lapel" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#2b2b31" />
+      <stop offset="100%" stop-color="#111116" />
+    </linearGradient>
+  </defs>
+
+  <rect width="900" height="900" fill="url(#bg)" />
+
+  <ellipse cx="450" cy="805" rx="185" ry="28" fill="#000" opacity="0.35" />
+
+  <rect x="395" y="140" width="110" height="100" rx="18" fill="#111114" />
+  <path d="M345 255 L555 255 L618 350 L618 730 L282 730 L282 350 Z" fill="url(#cloth)" />
+
+  <path d="M395 260 L505 260 L505 560 L450 515 L395 560 Z" fill="#0a0a0d" />
+  <path d="M340 255 L447 255 L395 470 L315 370 Z" fill="url(#lapel)" />
+  <path d="M560 255 L453 255 L505 470 L585 370 Z" fill="url(#lapel)" />
+
+  <rect x="318" y="486" width="120" height="28" rx="8" fill="#16161a" />
+  <rect x="462" y="486" width="120" height="28" rx="8" fill="#16161a" />
+
+  <circle cx="450" cy="455" r="5" fill="#2a2a2f" />
+  <circle cx="450" cy="495" r="5" fill="#2a2a2f" />
+  <circle cx="450" cy="535" r="5" fill="#2a2a2f" />
+</svg>

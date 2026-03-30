@@ -4,7 +4,7 @@ import { FaArrowRight } from 'react-icons/fa'
 function HeroSection({ stats }) {
   return (
     <section
-      className="relative w-full overflow-hidden border-y border-white/10"
+      className="relative h-screen w-full overflow-hidden border-y border-white/10"
       aria-labelledby="hero-title"
     >
       <img
@@ -13,7 +13,7 @@ function HeroSection({ stats }) {
         className="absolute inset-0 h-full w-full object-cover"
       />
       <div className="absolute inset-0 bg-black/60" />
-      <div className="relative z-10 mx-auto flex min-h-[740px] w-full max-w-[980px] flex-col items-center justify-center px-6 text-center sm:px-10">
+      <div className="relative z-10 mx-auto flex h-full w-full max-w-[980px] flex-col items-center justify-center px-6 text-center sm:px-10">
         <span className="inline-flex items-center rounded-full border border-white/20 bg-zinc-900/75 px-5 py-2 text-[clamp(0.8rem,1.2vw,0.95rem)] text-zinc-200">
           Spring Collection 2024
         </span>
