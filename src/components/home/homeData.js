@@ -1,129 +1,112 @@
-export const navLinks = [
-  "Today's Deals",
-  'Best Sellers',
-  'Mobile Phones',
-  'Electronics',
-  'Home & Kitchen',
-  'Fashion',
-  'Customer Service',
+export const navLinks = ['Collections', 'New Arrivals', 'About', 'Contact']
+
+export const heroStats = [
+  { value: '500+', label: 'Premium Products' },
+  { value: '50K+', label: 'Happy Customers' },
+  { value: 'Free', label: 'Fast Shipping' },
 ]
 
-export const searchScopes = [
-  'All',
-  'Electronics',
-  'Fashion',
-  'Appliances',
-  'Home',
-  'Books',
+export const collectionFilters = [
+  { id: 'all', label: 'All' },
+  { id: 'clothing', label: 'Clothing' },
+  { id: 'accessories', label: 'Accessories' },
+  { id: 'footwear', label: 'Footwear' },
+  { id: 'bags', label: 'Bags' },
 ]
 
-export const storeStats = [
-  { label: 'Lightning deals ending soon', value: '126' },
-  { label: 'Brands in sale event', value: '850+' },
-  { label: 'Avg Prime delivery', value: '1-2 Days' },
-]
-
-export const shopCategories = [
-  {
-    name: 'Up to 70% off | Headphones',
-    description: 'Noise-canceling, gaming, and studio picks.',
-    items: 219,
-    tone: '#e8f4ff',
-  },
-  {
-    name: 'Revamp your home',
-    description: 'Storage, decor, and cleaning essentials.',
-    items: 302,
-    tone: '#fff4e5',
-  },
-  {
-    name: 'Starting $99 | Smart watches',
-    description: 'Fitness, lifestyle, and performance wearables.',
-    items: 91,
-    tone: '#edf8ed',
-  },
-  {
-    name: 'Kitchen picks under $50',
-    description: 'Cookware and daily-use tools at budget prices.',
-    items: 187,
-    tone: '#f6ecff',
-  },
-]
-
-export const featuredProducts = [
+export const featuredCollections = [
   {
     id: 1,
-    name: '55-inch 4K Smart TV',
-    price: 449,
-    oldPrice: 599,
-    tag: 'Great Summer Sale',
-    tint: '#e8f3ff',
-    label: 'Smart TV',
-    rating: '4.4',
-    reviews: '12,840',
-    delivery: 'FREE delivery by tomorrow',
+    category: 'Clothing',
+    name: 'Classic White Shirt',
+    rating: '4.8',
+    price: 89,
+    image:
+      'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&w=900&q=80',
+    isNew: true,
   },
   {
     id: 2,
-    name: 'Air Fryer, 4.2L Digital',
-    price: 79,
-    oldPrice: 119,
-    tag: 'Limited Time Deal',
-    tint: '#fff3df',
-    label: 'Kitchen',
+    category: 'Accessories',
+    name: 'Premium Sunglasses',
+    rating: '4.9',
+    price: 179,
+    image:
+      'https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=900&q=80',
+    isNew: true,
+  },
+  {
+    id: 3,
+    category: 'Bags',
+    name: 'Leather Backpack',
+    rating: '4.7',
+    price: 199,
+    image:
+      'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=900&q=80',
+    isNew: true,
+  },
+  {
+    id: 4,
+    category: 'Watches',
+    name: 'Luxury Watch',
+    rating: '5.0',
+    price: 299,
+    image:
+      'https://images.unsplash.com/photo-1523170335258-f5ed11844a49?auto=format&fit=crop&w=900&q=80',
+    isNew: true,
+  },
+]
+
+export const newArrivals = [
+  {
+    id: 5,
+    category: 'Footwear',
+    name: 'Designer Sneakers',
+    rating: '4.8',
+    price: 149,
+    image:
+      'https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=900&q=80',
+    isNew: true,
+  },
+  {
+    id: 6,
+    category: 'Accessories',
+    name: 'Silk Scarf',
     rating: '4.6',
-    reviews: '8,104',
-    delivery: 'FREE delivery by Wednesday',
+    price: 69,
+    image:
+      'https://images.unsplash.com/photo-1601379327928-bedfaf9da2d0?auto=format&fit=crop&w=900&q=80',
+    isNew: true,
   },
   {
-    id: 3,
-    name: 'Bluetooth Soundbar 240W',
-    price: 139,
-    oldPrice: 199,
-    tag: 'Deal of the Day',
-    tint: '#f0ecff',
-    label: 'Audio',
-    rating: '4.3',
-    reviews: '3,762',
-    delivery: 'FREE delivery by tomorrow',
+    id: 7,
+    category: 'Clothing',
+    name: 'Wool Blazer',
+    rating: '4.9',
+    price: 249,
+    image:
+      'https://images.unsplash.com/photo-1593032465171-8bd6fdf2ee97?auto=format&fit=crop&w=900&q=80',
+    isNew: true,
   },
   {
-    id: 4,
-    name: 'Men Casual Sneakers',
-    price: 42,
-    oldPrice: 69,
-    tag: 'Top Brand',
-    tint: '#eaf8f5',
-    label: 'Fashion',
-    rating: '4.1',
-    reviews: '5,408',
-    delivery: 'FREE delivery by Friday',
+    id: 8,
+    category: 'Footwear',
+    name: 'Premium Loafers',
+    rating: '4.8',
+    price: 189,
+    image:
+      'https://images.unsplash.com/photo-1614251056216-f748f76cd228?auto=format&fit=crop&w=900&q=80',
+    isNew: true,
   },
 ]
 
-export const quickDeals = [
+export const footerColumns = [
   {
-    id: 1,
-    title: 'Up to 60% off | Laptops',
-    subtitle: 'Top brands, limited stock',
-    tone: '#e8f2ff',
+    title: 'Collections',
+    links: ['New Arrivals', 'Best Sellers', 'Designer', 'Sale'],
   },
   {
-    id: 2,
-    title: 'Minimum 40% off | Shoes',
-    subtitle: 'Running, casual, formal',
-    tone: '#fef0e7',
-  },
-  {
-    id: 3,
-    title: 'Save up to 50% | Furniture',
-    subtitle: 'Living room and office',
-    tone: '#edf8ed',
-  },
-  {
-    id: 4,
-    title: 'Up to 45% off | Beauty',
-    subtitle: 'Daily essentials and combos',
-    tone: '#f4eefe',
+    title: 'Company',
+    links: ['About Us', 'Blog', 'Careers', 'Press'],
   },
 ]

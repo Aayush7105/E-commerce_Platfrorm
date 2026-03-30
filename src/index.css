@@ -1,17 +1,1 @@
 @import "tailwindcss";
-
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #122032;
-}
-
-#root {
-  min-height: 100vh;
-}

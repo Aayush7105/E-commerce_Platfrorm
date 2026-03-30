@@ -6,25 +6,24 @@ import PromoSection from './home/PromoSection'
 import Footer from './home/Footer'
 import {
   navLinks,
-  searchScopes,
-  storeStats,
-  shopCategories,
-  featuredProducts,
-  quickDeals,
+  heroStats,
+  collectionFilters,
+  featuredCollections,
+  newArrivals,
+  footerColumns,
 } from './home/homeData'
-import './home/home-page.css'
 
 function HomePage() {
   return (
-    <div className="storefront">
-      <Header links={navLinks} cartCount={2} searchScopes={searchScopes} />
-      <main>
-        <HeroSection stats={storeStats} />
-        <CategorySection categories={shopCategories} />
-        <ProductSection products={featuredProducts} />
-        <PromoSection deals={quickDeals} />
+    <div className="min-h-screen bg-[#050505] text-white antialiased [font-family:'Poppins',sans-serif]">
+      <Header links={navLinks} cartCount={0} />
+      <main className="mx-auto flex w-full max-w-[1440px] flex-col gap-24 px-4 pb-20 pt-6 sm:px-8">
+        <HeroSection stats={heroStats} />
+        <ProductSection products={newArrivals} />
+        <CategorySection filters={collectionFilters} collections={featuredCollections} />
+        <PromoSection />
       </main>
-      <Footer />
+      <Footer columns={footerColumns} />
     </div>
   )
 }
