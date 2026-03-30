@@ -3,20 +3,20 @@ import CategoryCard from './CategoryCard'
 function CategorySection({ filters, collections }) {
   return (
     <section aria-labelledby="category-title">
-      <div className="max-w-4xl">
+      <div className="max-w-5xl">
         <h2
           id="category-title"
-          className="m-0 text-[clamp(1.8rem,3.8vw,3.2rem)] leading-tight font-semibold tracking-[-0.02em]"
+          className="m-0 text-[clamp(1.8rem,3.8vw,3.1rem)] leading-tight font-semibold tracking-[-0.02em]"
         >
           Featured Collections
         </h2>
-        <p className="mt-3 max-w-3xl text-[clamp(0.9rem,1.05vw,1.05rem)] leading-relaxed text-zinc-400">
+        <p className="mt-4 max-w-4xl text-[clamp(0.92rem,1.08vw,1.05rem)] leading-relaxed text-zinc-400">
           Handpicked selection of our finest pieces, carefully curated for those
           who appreciate quality and style.
         </p>
       </div>
 
-      <div className="mt-10 flex flex-wrap gap-3">
+      <div className="mt-12 flex flex-wrap gap-4">
         {filters.map((filter, index) => (
           <button
             key={filter.id}

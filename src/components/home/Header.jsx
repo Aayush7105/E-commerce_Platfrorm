@@ -33,9 +33,11 @@ function Header({ links, cartCount }) {
           >
             <FiShoppingBag className="h-[0.95rem] w-[0.95rem]" />
             <span className="text-[1rem] font-medium">Cart</span>
-            <span className="absolute -right-1 -top-1 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1 text-[0.95rem] font-bold text-white">
-              {cartCount}
-            </span>
+            {cartCount > 0 ? (
+              <span className="absolute -right-1 -top-1 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1 text-[0.95rem] font-bold text-white">
+                {cartCount}
+              </span>
+            ) : null}
           </button>
         </div>
       </div>

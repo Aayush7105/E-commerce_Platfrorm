@@ -49,10 +49,50 @@ export const featuredCollections = [
     id: 4,
     category: 'Watches',
     name: 'Luxury Watch',
-    rating: '5.0',
+    rating: '5',
     price: 299,
     image:
       'https://images.unsplash.com/photo-1523170335258-f5ed11844a49?auto=format&fit=crop&w=900&q=80',
+    isNew: true,
+  },
+  {
+    id: 5,
+    category: 'Footwear',
+    name: 'Designer Sneakers',
+    rating: '4.8',
+    price: 149,
+    image:
+      'https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=900&q=80',
+    isNew: true,
+  },
+  {
+    id: 6,
+    category: 'Accessories',
+    name: 'Silk Scarf',
+    rating: '4.6',
+    price: 69,
+    image:
+      'https://images.unsplash.com/photo-1601379327928-bedfaf9da2d0?auto=format&fit=crop&w=900&q=80',
+    isNew: true,
+  },
+  {
+    id: 7,
+    category: 'Clothing',
+    name: 'Wool Blazer',
+    rating: '4.9',
+    price: 249,
+    image:
+      'https://images.unsplash.com/photo-1593032465171-8bd6fdf2ee97?auto=format&fit=crop&w=900&q=80',
+    isNew: true,
+  },
+  {
+    id: 8,
+    category: 'Footwear',
+    name: 'Premium Loafers',
+    rating: '4.8',
+    price: 189,
+    image:
+      'https://images.unsplash.com/photo-1614251056216-f748f76cd228?auto=format&fit=crop&w=900&q=80',
     isNew: true,
   },
 ]
