@@ -1,4 +1,5 @@
 import StatList from "./StatList";
+import { FaArrowRight } from "react-icons/fa";
 
 function HeroSection({ stats }) {
   return (
@@ -31,7 +32,7 @@ function HeroSection({ stats }) {
             type="button"
             className="inline-flex items-center gap-3 rounded-2xl bg-white px-8 py-4 text-[clamp(0.9rem,1vw,1rem)] font-semibold text-black transition hover:bg-zinc-200"
           >
-            Shop Now <span aria-hidden="true"></span>
+            Shop Now <FaArrowRight aria-hidden="true" />
           </button>
           <button
             type="button"
