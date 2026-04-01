@@ -1,4 +1,9 @@
-export const navLinks = ['Collections', 'New Arrivals', 'About', 'Contact']
+export const navLinks = [
+  { label: 'Collections', to: '/collections' },
+  { label: 'New Arrivals', to: '/new-arrivals' },
+  { label: 'About', to: '/about' },
+  { label: 'Contact', to: '/contact' },
+]
 
 export const heroStats = [
   { value: '500+', label: 'Premium Products' },
