@@ -12,6 +12,7 @@ export const collectionFilters = [
   { id: 'accessories', label: 'Accessories' },
   { id: 'footwear', label: 'Footwear' },
   { id: 'bags', label: 'Bags' },
+  { id: 'watches', label: 'Watches' },
 ]
 
 export const featuredCollections = [

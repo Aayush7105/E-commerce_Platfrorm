@@ -51,9 +51,20 @@ const normalizeProductPayload = (payload) => {
 
 export const getProducts = async (req, res, next) => {
   try {
-    const { category, minPrice, maxPrice, isNew, search, q } = req.query
+    const { category, minPrice, maxPrice, isNew, search, q, sort } = req.query
     const filter = {}
     const normalizedSearchQuery = normalizeSearchQuery(q ?? search)
+    const sortOption = typeof sort === 'string' ? sort.trim() : 'newest'
+
+    const sortOptions = {
+      newest: { createdAt: -1 },
+      'price-asc': { price: 1 },
+      'price-desc': { price: -1 },
+      'rating-desc': { rating: -1 },
+      'name-asc': { name: 1 },
+    }
+
+    const sortQuery = sortOptions[sortOption] || sortOptions.newest
 
     if (category && category.toLowerCase() !== 'all') {
       filter.category = new RegExp(`^${escapeRegex(category)}$`, 'i')
@@ -91,7 +102,7 @@ export const getProducts = async (req, res, next) => {
       }
     }
 
-    const products = await Product.find(filter).sort({ createdAt: -1 })
+    const products = await Product.find(filter).sort(sortQuery)
     res.status(200).json(products)
   } catch (error) {
     next(error)

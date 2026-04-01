@@ -45,6 +45,7 @@ npm run seed:clear
 - `GET /api/products`
 - `GET /api/products?q=sneaker` (new multi-field search)
 - `GET /api/products?search=sneaker` (backward-compatible alias)
+- `GET /api/products?sort=price-asc` (sort: `newest`, `price-asc`, `price-desc`, `rating-desc`, `name-asc`)
 - `GET /api/products/:id`
 - `POST /api/products`
 - `PUT /api/products/:id`
