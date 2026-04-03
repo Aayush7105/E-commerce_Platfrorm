@@ -1,60 +1,100 @@
-# Backend (MongoDB + Products API)
+# Backend API (Express + MongoDB)
 
-This folder contains all database work for products using MongoDB.
+This backend provides product APIs used by the frontend catalog/search UI.
 
-## 1) Install backend dependencies
+## Requirements
+
+- Node.js 20+
+- npm
+- MongoDB (local or Atlas)
+
+## Setup
+
+Install dependencies from the `backend` folder:
 
 ```bash
 cd backend
 npm install
 ```
 
-## 2) Configure environment
-
-Create `backend/.env` from `backend/.env.example`:
+Create `backend/.env`:
 
 ```env
 PORT=5000
 MONGO_URI=mongodb://127.0.0.1:27017/ecommerce_platform
-FRONTEND_URL=http://localhost:5173
+NODE_ENV=development
 ```
 
-## 3) Start backend server
+Only `MONGO_URI` is required. `PORT` defaults to `5000` if omitted.
+
+## Run
+
+Development mode (with auto-restart):
 
 ```bash
 npm run dev
 ```
 
-Server URL: `http://localhost:5000`
+Production start:
 
-## 4) Seed sample products
+```bash
+npm run start
+```
+
+Base URL: `http://localhost:5000`
+
+Health check:
+
+- `GET /api/health`
+
+## Seed Data
+
+Insert sample products:
 
 ```bash
 npm run seed
 ```
 
-Clear products:
+Clear all products:
 
 ```bash
 npm run seed:clear
 ```
 
+## Scripts
+
+- `npm run dev` -> start with nodemon
+- `npm run start` -> start with node
+- `npm run seed` -> clear and seed products
+- `npm run seed:clear` -> remove all products
+
 ## API Endpoints
 
 - `GET /api/health`
 - `GET /api/products`
-- `GET /api/products?q=sneaker` (new multi-field search)
-- `GET /api/products?search=sneaker` (backward-compatible alias)
-- `GET /api/products?sort=price-asc` (sort: `newest`, `price-asc`, `price-desc`, `rating-desc`, `name-asc`)
 - `GET /api/products/:id`
 - `POST /api/products`
 - `PUT /api/products/:id`
 - `DELETE /api/products/:id`
 
-Search now matches `name`, `category`, and `description`, and still works with
-the existing query filters (`category`, `minPrice`, `maxPrice`, `isNew`).
+### `GET /api/products` Query Params
 
-### Example POST body
+- `q` or `search` -> text search across `name`, `category`, and `description`
+- `category` -> case-insensitive exact category match (`all` disables category filter)
+- `minPrice` -> minimum price
+- `maxPrice` -> maximum price
+- `isNew` -> `true` or `false`
+- `sort` -> `newest`, `price-asc`, `price-desc`, `rating-desc`, `name-asc`
+
+Example:
+
+```http
+GET /api/products?q=sneaker&category=Footwear&minPrice=100&maxPrice=300&isNew=true&sort=price-asc
+```
+
+## Product Payload
+
+Example create/update body:
 
 ```json
 {
@@ -68,3 +108,18 @@ the existing query filters (`category`, `minPrice`, `maxPrice`, `isNew`).
   "stock": 18
 }
 ```
+
+Response uses `isNew` as a boolean API field (stored internally as `isNewArrival`).
+
+## Error Format
+
+Errors return JSON:
+
+```json
+{
+  "message": "Error details",
+  "stack": "..."
+}
+```
+
+`stack` is omitted in production.
