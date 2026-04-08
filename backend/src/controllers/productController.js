@@ -49,9 +49,21 @@ const normalizeProductPayload = (payload) => {
   return normalizedPayload
 }
 
+const DEFAULT_PAGE_SIZE = 20
+const MAX_PAGE_SIZE = 100
+
+const parsePaginationParam = (value) => {
+  if (value === undefined) return undefined
+
+  const numericValue = Number.parseInt(value, 10)
+  if (!Number.isInteger(numericValue) || numericValue < 1) return null
+
+  return numericValue
+}
+
 export const getProducts = async (req, res, next) => {
   try {
-    const { category, minPrice, maxPrice, isNew, search, q, sort } = req.query
+    const { category, minPrice, maxPrice, isNew, search, q, sort, page, limit } = req.query
     const filter = {}
     const normalizedSearchQuery = normalizeSearchQuery(q ?? search)
     const sortOption = typeof sort === 'string' ? sort.trim() : 'newest'
@@ -102,8 +114,43 @@ export const getProducts = async (req, res, next) => {
       }
     }
 
-    const products = await Product.find(filter).sort(sortQuery)
-    res.status(200).json(products)
+    const parsedPage = parsePaginationParam(page)
+    const parsedLimit = parsePaginationParam(limit)
+
+    if (parsedPage === null || parsedLimit === null) {
+      res.status(400)
+      throw new Error('Pagination values for page and limit must be positive integers')
+    }
+
+    const shouldPaginate = parsedPage !== undefined || parsedLimit !== undefined
+    if (!shouldPaginate) {
+      const products = await Product.find(filter).sort(sortQuery)
+      res.status(200).json(products)
+      return
+    }
+
+    const currentPage = parsedPage ?? 1
+    const pageSize = Math.min(parsedLimit ?? DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE)
+    const skip = (currentPage - 1) * pageSize
+
+    const [totalItems, products] = await Promise.all([
+      Product.countDocuments(filter),
+      Product.find(filter).sort(sortQuery).skip(skip).limit(pageSize),
+    ])
+
+    const totalPages = totalItems === 0 ? 0 : Math.ceil(totalItems / pageSize)
+
+    res.status(200).json({
+      items: products,
+      pagination: {
+        page: currentPage,
+        limit: pageSize,
+        totalItems,
+        totalPages,
+        hasPreviousPage: currentPage > 1,
+        hasNextPage: totalPages > 0 && currentPage < totalPages,
+      },
+    })
   } catch (error) {
     next(error)
   }

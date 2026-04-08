@@ -6,6 +6,8 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import connectDB from './config/db.js'
 import { errorHandler, notFound } from './middleware/errorMiddleware.js'
+import { createRateLimiter } from './middleware/rateLimit.js'
+import { createRequestLogger } from './middleware/requestLogger.js'
 import productRoutes from './routes/productRoutes.js'
 
 const __filename = fileURLToPath(import.meta.url)
@@ -16,6 +18,34 @@ const app = express()
 const PORT = Number(process.env.PORT) || 5000
 let server
 let isShuttingDown = false
+
+const parseBooleanEnv = (value, fallback) => {
+  if (typeof value === 'boolean') return value
+  if (typeof value !== 'string') return fallback
+
+  const normalizedValue = value.trim().toLowerCase()
+  if (normalizedValue === 'true') return true
+  if (normalizedValue === 'false') return false
+  return fallback
+}
+
+const parsePositiveIntegerEnv = (value, fallback) => {
+  const parsedValue = Number.parseInt(value, 10)
+
+  if (!Number.isInteger(parsedValue) || parsedValue <= 0) {
+    return fallback
+  }
+
+  return parsedValue
+}
+
+const RATE_LIMIT_WINDOW_MS = parsePositiveIntegerEnv(process.env.RATE_LIMIT_WINDOW_MS, 60_000)
+const RATE_LIMIT_MAX_REQUESTS = parsePositiveIntegerEnv(process.env.RATE_LIMIT_MAX_REQUESTS, 120)
+const SHOULD_ENABLE_REQUEST_LOGGING = parseBooleanEnv(
+  process.env.REQUEST_LOGGING,
+  process.env.NODE_ENV !== 'test',
+)
+const TRUST_PROXY = parseBooleanEnv(process.env.TRUST_PROXY, false)
 
 const buildCorsOriginValidator = () => {
   const corsOrigin = process.env.CORS_ORIGIN
@@ -43,8 +73,17 @@ const buildCorsOriginValidator = () => {
   }
 }
 
+app.set('trust proxy', TRUST_PROXY)
 app.disable('x-powered-by')
 app.use(cors({ origin: buildCorsOriginValidator() }))
+app.use(createRequestLogger({ enabled: SHOULD_ENABLE_REQUEST_LOGGING }))
+app.use(
+  createRateLimiter({
+    windowMs: RATE_LIMIT_WINDOW_MS,
+    maxRequests: RATE_LIMIT_MAX_REQUESTS,
+    skip: (req) => req.path === '/api/health',
+  }),
+)
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 

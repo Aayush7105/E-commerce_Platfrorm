@@ -73,6 +73,9 @@ Create `backend/.env`:
 PORT=5000
 MONGO_URI=mongodb://127.0.0.1:27017/ecommerce_platform
 CORS_ORIGIN=http://localhost:5173
+REQUEST_LOGGING=true
+RATE_LIMIT_WINDOW_MS=60000
+RATE_LIMIT_MAX_REQUESTS=120
 ```
 
 Optional: create root `.env` if your API runs on a different host/port:
@@ -143,6 +146,7 @@ Base URL: `http://localhost:5000`
 - `GET /api/products?minPrice=100&maxPrice=250`
 - `GET /api/products?isNew=true`
 - `GET /api/products?sort=newest`
+- `GET /api/products?page=1&limit=12`
 - `GET /api/products/:id`
 - `POST /api/products`
 - `PUT /api/products/:id`
