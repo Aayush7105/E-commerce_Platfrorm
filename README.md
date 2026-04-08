@@ -72,6 +72,7 @@ Create `backend/.env`:
 ```env
 PORT=5000
 MONGO_URI=mongodb://127.0.0.1:27017/ecommerce_platform
+CORS_ORIGIN=http://localhost:5173
 ```
 
 Optional: create root `.env` if your API runs on a different host/port:

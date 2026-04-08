@@ -23,9 +23,11 @@ Create `backend/.env`:
 PORT=5000
 MONGO_URI=mongodb://127.0.0.1:27017/ecommerce_platform
 NODE_ENV=development
+CORS_ORIGIN=http://localhost:5173
 ```
 
 Only `MONGO_URI` is required. `PORT` defaults to `5000` if omitted.
+`CORS_ORIGIN` is optional and supports a comma-separated allowlist for browser origins.
 
 ## Run
 
