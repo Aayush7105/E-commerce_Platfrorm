@@ -14,10 +14,11 @@ A full-stack e-commerce project with:
 
 - Product listing powered by backend API
 - Live search with debounce (`q` query param)
-- Category, price range, and "new arrivals only" filters
+- Category, price/rating range, stock-state, and "new arrivals only" filters
 - Sorting by newest, price, rating, and name
 - Incremental "Load More" product grid
 - Product CRUD API with validation
+- Category aggregation and catalog analytics endpoints
 - Seed script to populate sample products
 
 ## Project Structure
@@ -139,11 +140,18 @@ Frontend URL:
 Base URL: `http://localhost:5000`
 
 - `GET /api/health`
+- `GET /api/ready`
+- `GET /api`
 - `GET /api/products`
+- `GET /api/products/categories`
+- `GET /api/products/stats`
 - `GET /api/products?q=sneaker`
 - `GET /api/products?search=sneaker` (alias of `q`)
 - `GET /api/products?category=Footwear`
 - `GET /api/products?minPrice=100&maxPrice=250`
+- `GET /api/products?minRating=4&maxRating=5`
+- `GET /api/products?inStock=true`
+- `GET /api/products?fields=name,price,rating,image`
 - `GET /api/products?isNew=true`
 - `GET /api/products?sort=newest`
 - `GET /api/products?page=1&limit=12`

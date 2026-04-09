@@ -129,6 +129,21 @@ app.use(
 app.use(express.json({ limit: JSON_BODY_LIMIT }))
 app.use(express.urlencoded({ extended: true, limit: URLENCODED_BODY_LIMIT }))
 
+app.get('/api', (req, res) => {
+  res.status(200).json({
+    service: 'ecommerce-backend',
+    status: 'ok',
+    timestamp: new Date().toISOString(),
+    endpoints: {
+      health: '/api/health',
+      readiness: '/api/ready',
+      products: '/api/products',
+      productCategories: '/api/products/categories',
+      catalogStats: '/api/products/stats',
+    },
+  })
+})
+
 app.get('/api/health', (req, res) => {
   const readyState = mongoose.connection.readyState
 

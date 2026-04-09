@@ -53,6 +53,7 @@ Base URL: `http://localhost:5000`
 Health check:
 
 - `GET /api/health`
+- `GET /api/ready`
 
 ## Seed Data
 
@@ -77,8 +78,12 @@ npm run seed:clear
 
 ## API Endpoints
 
+- `GET /api`
 - `GET /api/health`
+- `GET /api/ready`
 - `GET /api/products`
+- `GET /api/products/categories`
+- `GET /api/products/stats`
 - `GET /api/products/:id`
 - `POST /api/products`
 - `PUT /api/products/:id`
@@ -90,8 +95,12 @@ npm run seed:clear
 - `category` -> case-insensitive exact category match (`all` disables category filter)
 - `minPrice` -> minimum price
 - `maxPrice` -> maximum price
+- `minRating` -> minimum rating (`0` to `5`)
+- `maxRating` -> maximum rating (`0` to `5`)
 - `isNew` -> `true` or `false`
+- `inStock` -> `true` (stock > 0) or `false` (stock <= 0)
 - `sort` -> `newest`, `price-asc`, `price-desc`, `rating-desc`, `name-asc`
+- `fields` -> comma-separated response fields (for example `name,price,image`)
 - `page` -> optional page number for paginated response
 - `limit` -> optional page size (`max: 100`) for paginated response
 
@@ -103,6 +112,10 @@ GET /api/products?q=sneaker&category=Footwear&minPrice=100&maxPrice=300&isNew=tr
 
 ```http
 GET /api/products?page=1&limit=12
+```
+
+```http
+GET /api/products?inStock=true&minRating=4&fields=name,price,rating,image
 ```
 
 When `page` or `limit` is provided, the endpoint returns:
@@ -139,6 +152,36 @@ Example create/update body:
 ```
 
 Response uses `isNew` as a boolean API field (stored internally as `isNewArrival`).
+
+## Additional Product Endpoints
+
+### `GET /api/products/categories`
+
+Returns category counts for quick category navigation and faceting:
+
+```json
+{
+  "categories": [
+    { "name": "Footwear", "count": 8 },
+    { "name": "Clothing", "count": 6 }
+  ],
+  "totalCategories": 2
+}
+```
+
+### `GET /api/products/stats`
+
+Returns catalog-level summary metrics and top-rated products.
+
+Optional query param:
+
+- `top` -> number of top-rated products to include (`max: 20`, default: `5`)
+
+Example:
+
+```http
+GET /api/products/stats?top=3
+```
 
 ## Error Format
 
