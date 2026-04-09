@@ -39,6 +39,15 @@ const parsePositiveIntegerEnv = (value, fallback) => {
   return parsedValue
 }
 
+const parseNonEmptyStringEnv = (value, fallback) => {
+  if (typeof value !== 'string') {
+    return fallback
+  }
+
+  const normalizedValue = value.trim()
+  return normalizedValue || fallback
+}
+
 const RATE_LIMIT_WINDOW_MS = parsePositiveIntegerEnv(process.env.RATE_LIMIT_WINDOW_MS, 60_000)
 const RATE_LIMIT_MAX_REQUESTS = parsePositiveIntegerEnv(process.env.RATE_LIMIT_MAX_REQUESTS, 120)
 const SHOULD_ENABLE_REQUEST_LOGGING = parseBooleanEnv(
@@ -46,6 +55,9 @@ const SHOULD_ENABLE_REQUEST_LOGGING = parseBooleanEnv(
   process.env.NODE_ENV !== 'test',
 )
 const TRUST_PROXY = parseBooleanEnv(process.env.TRUST_PROXY, false)
+const JSON_BODY_LIMIT = parseNonEmptyStringEnv(process.env.JSON_BODY_LIMIT, '100kb')
+const URLENCODED_BODY_LIMIT = parseNonEmptyStringEnv(process.env.URLENCODED_BODY_LIMIT, '100kb')
+const HEALTH_INCLUDE_UPTIME = parseBooleanEnv(process.env.HEALTH_INCLUDE_UPTIME, true)
 
 const buildCorsOriginValidator = () => {
   const corsOrigin = process.env.CORS_ORIGIN
@@ -73,22 +85,78 @@ const buildCorsOriginValidator = () => {
   }
 }
 
+const buildSecurityHeadersMiddleware = () => {
+  return (req, res, next) => {
+    res.setHeader('X-Content-Type-Options', 'nosniff')
+    res.setHeader('X-Frame-Options', 'DENY')
+    res.setHeader('Referrer-Policy', 'no-referrer')
+    res.setHeader('X-DNS-Prefetch-Control', 'off')
+    res.setHeader('X-Permitted-Cross-Domain-Policies', 'none')
+    res.setHeader('Cross-Origin-Opener-Policy', 'same-origin')
+    res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()')
+
+    if (req.secure || req.headers['x-forwarded-proto'] === 'https') {
+      res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains')
+    }
+
+    next()
+  }
+}
+
+const getDatabaseStateLabel = (readyState) => {
+  const stateLabels = {
+    0: 'disconnected',
+    1: 'connected',
+    2: 'connecting',
+    3: 'disconnecting',
+  }
+
+  return stateLabels[readyState] || 'unknown'
+}
+
 app.set('trust proxy', TRUST_PROXY)
 app.disable('x-powered-by')
 app.use(cors({ origin: buildCorsOriginValidator() }))
+app.use(buildSecurityHeadersMiddleware())
 app.use(createRequestLogger({ enabled: SHOULD_ENABLE_REQUEST_LOGGING }))
 app.use(
   createRateLimiter({
     windowMs: RATE_LIMIT_WINDOW_MS,
     maxRequests: RATE_LIMIT_MAX_REQUESTS,
-    skip: (req) => req.path === '/api/health',
+    skip: (req) => req.path === '/api/health' || req.path === '/api/ready',
   }),
 )
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
+app.use(express.json({ limit: JSON_BODY_LIMIT }))
+app.use(express.urlencoded({ extended: true, limit: URLENCODED_BODY_LIMIT }))
 
 app.get('/api/health', (req, res) => {
-  res.status(200).json({ message: 'Backend is running' })
+  const readyState = mongoose.connection.readyState
+
+  const healthResponse = {
+    status: 'ok',
+    message: 'Backend is running',
+    service: 'ecommerce-backend',
+    environment: process.env.NODE_ENV || 'development',
+    timestamp: new Date().toISOString(),
+    database: getDatabaseStateLabel(readyState),
+  }
+
+  if (HEALTH_INCLUDE_UPTIME) {
+    healthResponse.uptimeSeconds = Number(process.uptime().toFixed(1))
+  }
+
+  res.status(200).json(healthResponse)
+})
+
+app.get('/api/ready', (req, res) => {
+  const readyState = mongoose.connection.readyState
+  const isDatabaseReady = readyState === 1
+
+  res.status(isDatabaseReady ? 200 : 503).json({
+    status: isDatabaseReady ? 'ready' : 'not_ready',
+    database: getDatabaseStateLabel(readyState),
+    timestamp: new Date().toISOString(),
+  })
 })
 
 app.use('/api/products', productRoutes)
@@ -164,4 +232,9 @@ process.on('SIGTERM', () => {
 process.on('unhandledRejection', (reason) => {
   console.error('Unhandled promise rejection:', reason)
   shutdown('unhandledRejection', 1)
+})
+
+process.on('uncaughtException', (error) => {
+  console.error('Uncaught exception:', error)
+  shutdown('uncaughtException', 1)
 })
