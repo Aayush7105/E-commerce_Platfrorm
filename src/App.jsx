@@ -8,6 +8,7 @@ import FaqPage from './components/pages/FaqPage'
 import NewArrivalsPage from './components/pages/NewArrivalsPage'
 import NotFoundPage from './components/pages/NotFoundPage'
 import SalePage from './components/pages/SalePage'
+import WishlistPage from './components/pages/WishlistPage'
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/about" element={<AboutPage />} />
         <Route path="/faq" element={<FaqPage />} />
         <Route path="/contact" element={<ContactPage />} />
+        <Route path="/wishlist" element={<WishlistPage />} />
         <Route path="/home" element={<Navigate to="/" replace />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>

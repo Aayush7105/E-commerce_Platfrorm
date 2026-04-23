@@ -1,5 +1,7 @@
+import { useEffect, useState } from 'react'
 import { FiHeart, FiSearch, FiShoppingBag } from 'react-icons/fi'
 import { Link, NavLink } from 'react-router-dom'
+import { getWishlistItems, subscribeToWishlist } from '../../utils/wishlist'
 
 function Header({
   links,
@@ -8,6 +10,15 @@ function Header({
   onSearchChange = () => {},
   showSearch = true,
 }) {
+  const [wishlistItems, setWishlistItems] = useState(() => getWishlistItems())
+  const wishlistCount = wishlistItems.length
+
+  useEffect(() => {
+    return subscribeToWishlist((items) => {
+      setWishlistItems(items)
+    })
+  }, [])
+
   return (
     <header className="sticky top-0 z-40 border-b border-white/10 bg-black/95 backdrop-blur">
       <div className="mx-auto flex h-20 w-full max-w-[1440px] items-center justify-between gap-3 px-4 sm:px-8">
@@ -53,9 +64,18 @@ function Header({
               <FiSearch className="h-[1.1rem] w-[1.1rem]" />
             </Link>
           )}
-          <button type="button" className="rounded-md p-2 transition hover:bg-white/10">
+          <Link
+            to="/wishlist"
+            aria-label="Go to wishlist"
+            className="relative rounded-md p-2 text-zinc-300 transition hover:bg-white/10 hover:text-white"
+          >
             <FiHeart className="h-[1.1rem] w-[1.1rem]" />
-          </button>
+            {wishlistCount > 0 ? (
+              <span className="absolute -right-1 -top-1 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1 text-[0.72rem] font-bold text-white">
+                {wishlistCount}
+              </span>
+            ) : null}
+          </Link>
           <button
             type="button"
             className="relative flex items-center gap-2 rounded-xl bg-white px-4 py-2.5 text-black"

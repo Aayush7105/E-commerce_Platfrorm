@@ -32,7 +32,7 @@ function CategorySection({ filters, collections }) {
         ))}
       </div>
 
-      <div className="mt-20 grid grid-cols-1 gap-x-7 gap-y-24 md:grid-cols-2 xl:grid-cols-4">
+      <div className="mt-20 grid grid-cols-1 gap-x-7  gap-y-24 md:grid-cols-2 xl:grid-cols-4">
         {collections.map((item) => (
           <CategoryCard key={item.id} product={item} />
         ))}

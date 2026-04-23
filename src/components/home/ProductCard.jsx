@@ -1,7 +1,10 @@
+import WishlistToggleButton from './WishlistToggleButton'
+
 function ProductCard({ product }) {
   return (
     <article>
       <div className="group relative overflow-hidden rounded-2xl border border-white/10 bg-zinc-950">
+        <WishlistToggleButton product={product} />
         <img
           src={product.image}
           alt={product.name}

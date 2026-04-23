@@ -135,6 +135,7 @@ Frontend URL:
 - `/about`
 - `/faq`
 - `/contact`
+- `/wishlist`
 - `/home` redirects to `/`
 - `*` custom 404 page
 

@@ -1,9 +1,11 @@
 import { FaStar } from 'react-icons/fa'
+import WishlistToggleButton from './WishlistToggleButton'
 
 function CategoryCard({ product }) {
   return (
     <article>
       <div className="group relative overflow-hidden rounded-2xl border border-white/10 bg-[#090909]">
+        <WishlistToggleButton product={product} />
         <img
           src={product.image}
           alt={product.name}
