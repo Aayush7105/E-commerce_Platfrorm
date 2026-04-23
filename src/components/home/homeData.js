@@ -1,7 +1,10 @@
 export const navLinks = [
   { label: 'Collections', to: '/collections' },
   { label: 'New Arrivals', to: '/new-arrivals' },
+  { label: 'Best Sellers', to: '/best-sellers' },
+  { label: 'Sale', to: '/sale' },
   { label: 'About', to: '/about' },
+  { label: 'FAQ', to: '/faq' },
   { label: 'Contact', to: '/contact' },
 ]
 

@@ -130,7 +130,10 @@ Frontend URL:
 - `/` home page with search, filters, sort, and product list
 - `/collections`
 - `/new-arrivals`
+- `/best-sellers`
+- `/sale`
 - `/about`
+- `/faq`
 - `/contact`
 - `/home` redirects to `/`
 - `*` custom 404 page
