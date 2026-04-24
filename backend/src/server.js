@@ -73,6 +73,14 @@ const HEALTH_INCLUDE_UPTIME = parseBooleanEnv(
   process.env.HEALTH_INCLUDE_UPTIME,
   true,
 );
+const METRICS_INCLUDE_MEMORY = parseBooleanEnv(
+  process.env.METRICS_INCLUDE_MEMORY,
+  true,
+);
+const SHUTDOWN_TIMEOUT_MS = parsePositiveIntegerEnv(
+  process.env.SHUTDOWN_TIMEOUT_MS,
+  10_000,
+);
 
 const buildCorsOriginValidator = () => {
   const corsOrigin = process.env.CORS_ORIGIN;
@@ -135,6 +143,8 @@ const getDatabaseStateLabel = (readyState) => {
   return stateLabels[readyState] || "unknown";
 };
 
+const toMegabytes = (bytes) => Number((bytes / (1024 * 1024)).toFixed(2));
+
 app.set("trust proxy", TRUST_PROXY);
 app.disable("x-powered-by");
 app.use(cors({ origin: buildCorsOriginValidator() }));
@@ -144,7 +154,10 @@ app.use(
   createRateLimiter({
     windowMs: RATE_LIMIT_WINDOW_MS,
     maxRequests: RATE_LIMIT_MAX_REQUESTS,
-    skip: (req) => req.path === "/api/health" || req.path === "/api/ready",
+    skip: (req) =>
+      req.path === "/api/health" ||
+      req.path === "/api/ready" ||
+      req.path === "/api/metrics",
   }),
 );
 app.use(express.json({ limit: JSON_BODY_LIMIT }));
@@ -158,6 +171,7 @@ app.get("/api", (req, res) => {
     endpoints: {
       health: "/api/health",
       readiness: "/api/ready",
+      metrics: "/api/metrics",
       products: "/api/products",
       productCategories: "/api/products/categories",
       catalogStats: "/api/products/stats",
@@ -195,6 +209,34 @@ app.get("/api/ready", (req, res) => {
   });
 });
 
+app.get("/api/metrics", (req, res) => {
+  const readyState = mongoose.connection.readyState;
+  const metricsResponse = {
+    service: "ecommerce-backend",
+    timestamp: new Date().toISOString(),
+    uptimeSeconds: Number(process.uptime().toFixed(1)),
+    database: getDatabaseStateLabel(readyState),
+    process: {
+      pid: process.pid,
+      nodeVersion: process.version,
+      platform: process.platform,
+    },
+  };
+
+  if (METRICS_INCLUDE_MEMORY) {
+    const memoryUsage = process.memoryUsage();
+    metricsResponse.memoryMB = {
+      rss: toMegabytes(memoryUsage.rss),
+      heapTotal: toMegabytes(memoryUsage.heapTotal),
+      heapUsed: toMegabytes(memoryUsage.heapUsed),
+      external: toMegabytes(memoryUsage.external),
+      arrayBuffers: toMegabytes(memoryUsage.arrayBuffers),
+    };
+  }
+
+  res.status(200).json(metricsResponse);
+});
+
 app.use("/api/products", productRoutes);
 
 app.use(notFound);
@@ -223,7 +265,7 @@ const shutdown = async (signal, exitCode = 0) => {
   const forceExitTimer = setTimeout(() => {
     console.error("Forced shutdown: cleanup timed out");
     process.exit(1);
-  }, 10000);
+  }, SHUTDOWN_TIMEOUT_MS);
   forceExitTimer.unref();
 
   try {

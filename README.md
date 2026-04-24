@@ -77,6 +77,9 @@ CORS_ORIGIN=http://localhost:5173
 REQUEST_LOGGING=true
 RATE_LIMIT_WINDOW_MS=60000
 RATE_LIMIT_MAX_REQUESTS=120
+HEALTH_INCLUDE_UPTIME=true
+METRICS_INCLUDE_MEMORY=true
+SHUTDOWN_TIMEOUT_MS=10000
 ```
 
 Optional: create root `.env` if your API runs on a different host/port:
@@ -145,6 +148,7 @@ Base URL: `http://localhost:5000`
 
 - `GET /api/health`
 - `GET /api/ready`
+- `GET /api/metrics`
 - `GET /api`
 - `GET /api/products`
 - `GET /api/products/categories`

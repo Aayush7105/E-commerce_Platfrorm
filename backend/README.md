@@ -28,11 +28,17 @@ REQUEST_LOGGING=true
 RATE_LIMIT_WINDOW_MS=60000
 RATE_LIMIT_MAX_REQUESTS=120
 TRUST_PROXY=false
+HEALTH_INCLUDE_UPTIME=true
+METRICS_INCLUDE_MEMORY=true
+SHUTDOWN_TIMEOUT_MS=10000
 ```
 
 Only `MONGO_URI` is required. `PORT` defaults to `5000` if omitted.
 `CORS_ORIGIN` is optional and supports a comma-separated allowlist for browser origins.
 `RATE_LIMIT_WINDOW_MS` and `RATE_LIMIT_MAX_REQUESTS` are optional and control in-memory rate limiting.
+`HEALTH_INCLUDE_UPTIME` toggles uptime in `/api/health`.
+`METRICS_INCLUDE_MEMORY` toggles memory metrics in `/api/metrics`.
+`SHUTDOWN_TIMEOUT_MS` controls forced shutdown timeout for graceful shutdown.
 
 ## Run
 
@@ -81,6 +87,7 @@ npm run seed:clear
 - `GET /api`
 - `GET /api/health`
 - `GET /api/ready`
+- `GET /api/metrics`
 - `GET /api/products`
 - `GET /api/products/categories`
 - `GET /api/products/stats`
