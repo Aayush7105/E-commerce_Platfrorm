@@ -1,13 +1,42 @@
+import { FiStar } from 'react-icons/fi'
 import WishlistToggleButton from './WishlistToggleButton'
 
+const currencyFormatter = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+})
+
+const clampRating = (value) => {
+  const numericRating = Number(value)
+  if (!Number.isFinite(numericRating)) return 0
+  return Math.min(Math.max(numericRating, 0), 5)
+}
+
+const formatRating = (value) => {
+  const rating = clampRating(value)
+  return Number.isInteger(rating) ? String(rating) : rating.toFixed(1)
+}
+
+const formatPrice = (value) => {
+  const numericPrice = Number(value)
+  return currencyFormatter.format(Number.isFinite(numericPrice) ? numericPrice : 0)
+}
+
 function ProductCard({ product }) {
+  const rating = clampRating(product.rating)
+  const filledStarCount = Math.round(rating)
+  const ratingLabel = formatRating(product.rating)
+  const productName = typeof product.name === 'string' && product.name.trim() ? product.name : 'Untitled Product'
+  const productCategory =
+    typeof product.category === 'string' && product.category.trim() ? product.category : 'General'
+
   return (
     <article>
       <div className="group relative overflow-hidden rounded-2xl border border-white/10 bg-zinc-950">
         <WishlistToggleButton product={product} />
         <img
           src={product.image}
-          alt={product.name}
+          alt={productName}
           className="h-[330px] w-full object-cover transition duration-300 group-hover:scale-105"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/25 to-transparent" />
@@ -19,14 +48,24 @@ function ProductCard({ product }) {
       </div>
 
       <p className="mt-3.5 text-[0.78rem] uppercase tracking-[0.14em] text-zinc-400">
-        {product.category}
+        {productCategory}
       </p>
-      <h3 className="mt-1.5 text-[clamp(1.05rem,1.2vw,1.3rem)] leading-tight font-semibold">{product.name}</h3>
+      <h3 className="mt-1.5 text-[clamp(1.05rem,1.2vw,1.3rem)] leading-tight font-semibold">{productName}</h3>
       <p className="mt-2.5 flex items-center gap-2 text-[0.88rem] text-zinc-300">
-        <span className="text-yellow-400">*****</span>
-        <span>({product.rating})</span>
+        <span className="flex items-center gap-0.5" aria-label={`${ratingLabel} out of 5 stars`}>
+          {Array.from({ length: 5 }, (_, index) => (
+            <FiStar
+              key={index}
+              aria-hidden="true"
+              className={`h-4 w-4 ${index < filledStarCount ? 'fill-current text-yellow-400' : 'text-zinc-600'}`}
+            />
+          ))}
+        </span>
+        <span>({ratingLabel})</span>
       </p>
-      <p className="mt-3 text-[clamp(1.3rem,1.6vw,1.7rem)] leading-none font-semibold">${product.price}</p>
+      <p className="mt-3 text-[clamp(1.3rem,1.6vw,1.7rem)] leading-none font-semibold">
+        {formatPrice(product.price)}
+      </p>
     </article>
   )
 }

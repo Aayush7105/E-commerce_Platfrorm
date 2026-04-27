@@ -137,6 +137,8 @@ function ProductSection({
         <p className="rounded-2xl border border-white/10 bg-zinc-950/70 px-5 py-8 text-center text-zinc-300">
           {hasActiveSearch
             ? `No products found for "${searchTerm}". Try another keyword.`
+            : hasActiveFilters
+              ? 'No products match the selected filters.'
             : 'No products available right now.'}
         </p>
       ) : null}
