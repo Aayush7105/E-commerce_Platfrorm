@@ -3,7 +3,7 @@ export const notFound = (req, res, next) => {
   next(new Error(`Route not found: ${req.originalUrl}`))
 }
 
-export const errorHandler = (error, req, res, next) => {
+export const errorHandler = (error, req, res, _next) => {
   const statusCode = res.statusCode !== 200 ? res.statusCode : 500
 
   const errorResponse = {
