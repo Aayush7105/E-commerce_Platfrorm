@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { FiHeart, FiMenu, FiSearch, FiShoppingBag, FiX } from 'react-icons/fi'
 import { Link, NavLink } from 'react-router-dom'
 import { getWishlistItems, subscribeToWishlist } from '../../utils/wishlist'
+import { useToast } from '../ui/useToast'
 
 function Header({
   links,
@@ -10,6 +11,7 @@ function Header({
   onSearchChange = () => {},
   showSearch = true,
 }) {
+  const { showToast } = useToast()
   const [wishlistItems, setWishlistItems] = useState(() => getWishlistItems())
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const wishlistCount = wishlistItems.length
@@ -65,6 +67,14 @@ function Header({
       desktopQuery.removeEventListener('change', closeOnDesktop)
     }
   }, [])
+
+  const handleCartClick = () => {
+    showToast({
+      title: 'Cart is ready for checkout flow',
+      message: 'Cart drawer and item quantities can be added next.',
+      type: 'info',
+    })
+  }
 
   return (
     <>
@@ -126,6 +136,7 @@ function Header({
             </Link>
             <button
               type="button"
+              onClick={handleCartClick}
               className="motion-button relative flex items-center gap-2 rounded-xl bg-white px-3 py-2.5 text-black sm:px-4"
             >
               <FiShoppingBag className="h-[0.95rem] w-[0.95rem]" />
@@ -235,7 +246,10 @@ function Header({
               </Link>
               <button
                 type="button"
-                onClick={() => setIsMobileMenuOpen(false)}
+                onClick={() => {
+                  setIsMobileMenuOpen(false)
+                  handleCartClick()
+                }}
                 className="motion-button flex items-center justify-between rounded-2xl bg-white px-4 py-3 font-semibold text-black"
               >
                 <span className="inline-flex items-center gap-3">

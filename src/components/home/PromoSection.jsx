@@ -1,4 +1,23 @@
+import { useToast } from '../ui/useToast'
+
 function PromoSection() {
+  const { showToast } = useToast()
+
+  const handleNewsletterSubmit = (event) => {
+    event.preventDefault()
+
+    const form = event.currentTarget
+    const formData = new FormData(form)
+    const email = String(formData.get('email') ?? '').trim()
+
+    showToast({
+      title: 'You are on the list',
+      message: email ? `Style updates will go to ${email}.` : 'Style updates will land in your inbox.',
+      type: 'success',
+    })
+    form.reset()
+  }
+
   return (
     <section
       className="motion-glow-panel motion-fade-up rounded-[28px] border border-white/15 bg-gradient-to-r from-zinc-900 to-zinc-950 px-6 py-12 sm:px-10"
@@ -19,14 +38,16 @@ function PromoSection() {
 
       <form
         className="motion-fade-up motion-delay-1 relative mt-8 flex w-full max-w-5xl flex-col gap-4 sm:flex-row"
-        onSubmit={(event) => event.preventDefault()}
+        onSubmit={handleNewsletterSubmit}
       >
         <label htmlFor="newsletter-email" className="sr-only">
           Enter your email
         </label>
         <input
           id="newsletter-email"
+          name="email"
           type="email"
+          required
           placeholder="Enter your email"
           className="h-14 flex-1 rounded-2xl border border-white/20 bg-black px-5 text-[0.95rem] text-white placeholder:text-zinc-500 focus:border-white/40 focus:outline-none"
         />

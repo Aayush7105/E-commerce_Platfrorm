@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { FiHeart } from 'react-icons/fi'
 import { getWishlistItems, subscribeToWishlist, toggleWishlistItem } from '../../utils/wishlist'
+import { useToast } from '../ui/useToast'
 
 const getProductId = (product) => {
   if (!product || typeof product !== 'object') {
@@ -17,6 +18,7 @@ const getProductId = (product) => {
 
 function WishlistToggleButton({ product }) {
   const productId = getProductId(product)
+  const { showToast } = useToast()
   const [wishlistItems, setWishlistItems] = useState(() => getWishlistItems())
   const isWishlisted = productId ? wishlistItems.some((item) => item.id === productId) : false
 
@@ -31,8 +33,16 @@ function WishlistToggleButton({ product }) {
       return
     }
 
-    const { items } = toggleWishlistItem(product)
+    const { items, isWishlisted: nextIsWishlisted } = toggleWishlistItem(product)
     setWishlistItems(items)
+    showToast({
+      title: nextIsWishlisted ? 'Added to wishlist' : 'Removed from wishlist',
+      message:
+        typeof product?.name === 'string' && product.name.trim()
+          ? product.name
+          : 'Your wishlist has been updated.',
+      type: nextIsWishlisted ? 'success' : 'info',
+    })
   }
 
   return (
