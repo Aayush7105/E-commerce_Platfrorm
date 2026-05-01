@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { FiHeart, FiMenu, FiSearch, FiShoppingBag, FiX } from 'react-icons/fi'
 import { Link, NavLink } from 'react-router-dom'
 import { getWishlistItems, subscribeToWishlist } from '../../utils/wishlist'
-import { useToast } from '../ui/useToast'
+import { useCart } from '../cart/useCart'
 
 function Header({
   links,
@@ -11,10 +11,11 @@ function Header({
   onSearchChange = () => {},
   showSearch = true,
 }) {
-  const { showToast } = useToast()
+  const { openCart, totalQuantity } = useCart()
   const [wishlistItems, setWishlistItems] = useState(() => getWishlistItems())
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const wishlistCount = wishlistItems.length
+  const displayedCartCount = totalQuantity || cartCount
 
   useEffect(() => {
     return subscribeToWishlist((items) => {
@@ -67,14 +68,6 @@ function Header({
       desktopQuery.removeEventListener('change', closeOnDesktop)
     }
   }, [])
-
-  const handleCartClick = () => {
-    showToast({
-      title: 'Cart is ready for checkout flow',
-      message: 'Cart drawer and item quantities can be added next.',
-      type: 'info',
-    })
-  }
 
   return (
     <>
@@ -136,14 +129,14 @@ function Header({
             </Link>
             <button
               type="button"
-              onClick={handleCartClick}
+              onClick={openCart}
               className="motion-button relative flex items-center gap-2 rounded-xl bg-white px-3 py-2.5 text-black sm:px-4"
             >
               <FiShoppingBag className="h-[0.95rem] w-[0.95rem]" />
               <span className="hidden text-[1rem] font-medium sm:inline">Cart</span>
-              {cartCount > 0 ? (
+              {displayedCartCount > 0 ? (
                 <span className="absolute -right-1 -top-1 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1 text-[0.95rem] font-bold text-white">
-                  {cartCount}
+                  {displayedCartCount}
                 </span>
               ) : null}
             </button>
@@ -248,7 +241,7 @@ function Header({
                 type="button"
                 onClick={() => {
                   setIsMobileMenuOpen(false)
-                  handleCartClick()
+                  openCart()
                 }}
                 className="motion-button flex items-center justify-between rounded-2xl bg-white px-4 py-3 font-semibold text-black"
               >
@@ -256,7 +249,7 @@ function Header({
                   <FiShoppingBag className="h-4 w-4" />
                   Cart
                 </span>
-                <span>{cartCount}</span>
+                <span>{displayedCartCount}</span>
               </button>
             </div>
           </aside>

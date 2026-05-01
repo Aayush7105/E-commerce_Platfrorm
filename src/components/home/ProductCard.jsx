@@ -1,4 +1,6 @@
-import { FiStar } from 'react-icons/fi'
+import { FiShoppingBag, FiStar } from 'react-icons/fi'
+import { useCart } from '../cart/useCart'
+import { useToast } from '../ui/useToast'
 import WishlistToggleButton from './WishlistToggleButton'
 
 const currencyFormatter = new Intl.NumberFormat('en-US', {
@@ -23,12 +25,28 @@ const formatPrice = (value) => {
 }
 
 function ProductCard({ product, index = 0 }) {
+  const { addCartItem } = useCart()
+  const { showToast } = useToast()
   const rating = clampRating(product.rating)
   const filledStarCount = Math.round(rating)
   const ratingLabel = formatRating(product.rating)
   const productName = typeof product.name === 'string' && product.name.trim() ? product.name : 'Untitled Product'
   const productCategory =
     typeof product.category === 'string' && product.category.trim() ? product.category : 'General'
+
+  const handleAddToCart = () => {
+    const cartItem = addCartItem(product)
+
+    if (!cartItem) {
+      return
+    }
+
+    showToast({
+      title: 'Added to cart',
+      message: cartItem.name,
+      type: 'success',
+    })
+  }
 
   return (
     <article className="motion-card" style={{ animationDelay: `${index * 70}ms` }}>
@@ -66,6 +84,14 @@ function ProductCard({ product, index = 0 }) {
       <p className="mt-3 text-[clamp(1.3rem,1.6vw,1.7rem)] leading-none font-semibold">
         {formatPrice(product.price)}
       </p>
+      <button
+        type="button"
+        onClick={handleAddToCart}
+        className="motion-button mt-4 inline-flex h-12 w-full items-center justify-center gap-2 rounded-2xl bg-white px-5 text-[0.95rem] font-semibold text-black hover:bg-zinc-200"
+      >
+        <FiShoppingBag className="h-4 w-4" aria-hidden="true" />
+        Add to Cart
+      </button>
     </article>
   )
 }
