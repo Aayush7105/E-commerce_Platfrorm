@@ -3,7 +3,7 @@ import CategoryCard from "./CategoryCard";
 function CategorySection({ filters, collections }) {
   return (
     <section className="mt-8" aria-labelledby="category-title">
-      <div className="max-w-5xl">
+      <div className="motion-fade-up max-w-5xl">
         <h2
           id="category-title"
           className="mt-10 text-[clamp(1.8rem,3.8vw,3.1rem)] leading-tight font-semibold tracking-[-0.02em]"
@@ -21,11 +21,12 @@ function CategorySection({ filters, collections }) {
           <button
             key={filter.id}
             type="button"
-            className={`rounded-2xl px-5 py-2.5 text-[0.9rem] font-medium transition ${
+            className={`motion-button motion-fade-up rounded-2xl px-5 py-2.5 text-[0.9rem] font-medium ${
               index === 0
                 ? "bg-white text-black"
                 : "bg-zinc-900 text-white hover:bg-zinc-800"
             }`}
+            style={{ animationDelay: `${120 + index * 55}ms` }}
           >
             {filter.label}
           </button>
@@ -33,8 +34,8 @@ function CategorySection({ filters, collections }) {
       </div>
 
       <div className="mt-20 grid grid-cols-1 gap-x-7  gap-y-24 md:grid-cols-2 xl:grid-cols-4">
-        {collections.map((item) => (
-          <CategoryCard key={item.id} product={item} />
+        {collections.map((item, index) => (
+          <CategoryCard key={item.id} product={item} index={index} />
         ))}
       </div>
     </section>

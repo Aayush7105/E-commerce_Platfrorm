@@ -4,10 +4,10 @@ import { footerColumns, navLinks } from '../home/homeData'
 
 function PageLayout({ title, subtitle, children }) {
   return (
-    <div className="min-h-screen bg-[#050505] text-white antialiased [font-family:'Poppins',sans-serif]">
+    <div className="motion-page min-h-screen bg-[#050505] text-white antialiased [font-family:'Poppins',sans-serif]">
       <Header links={navLinks} cartCount={0} showSearch={false} />
       <main className="mx-auto w-full max-w-[1440px] px-4 pb-20 pt-16 sm:px-8">
-        <section className="rounded-3xl border border-white/10 bg-zinc-950/80 p-8 sm:p-10">
+        <section className="motion-glow-panel motion-fade-up rounded-3xl border border-white/10 bg-zinc-950/80 p-8 sm:p-10">
           <p className="m-0 text-[0.8rem] uppercase tracking-[0.16em] text-zinc-400">LUXE</p>
           <h1 className="mt-4 text-[clamp(2rem,4.5vw,4rem)] leading-[1.03] font-semibold tracking-[-0.02em]">
             {title}
@@ -17,7 +17,7 @@ function PageLayout({ title, subtitle, children }) {
           </p>
         </section>
 
-        <div className="mt-10">{children}</div>
+        <div className="motion-fade-up motion-delay-2 mt-10">{children}</div>
       </main>
       <Footer columns={footerColumns} />
     </div>

@@ -1,19 +1,19 @@
 import { FaStar } from 'react-icons/fa'
 import WishlistToggleButton from './WishlistToggleButton'
 
-function CategoryCard({ product }) {
+function CategoryCard({ product, index = 0 }) {
   return (
-    <article>
-      <div className="group relative overflow-hidden rounded-2xl border border-white/10 bg-[#090909]">
+    <article className="motion-card" style={{ animationDelay: `${index * 85}ms` }}>
+      <div className="motion-hover-lift group relative overflow-hidden rounded-2xl border border-white/10 bg-[#090909] hover:border-white/20">
         <WishlistToggleButton product={product} />
         <img
           src={product.image}
           alt={product.name}
-          className="h-[300px] w-full object-cover brightness-[0.78] contrast-[1.12] saturate-[0.88] transition duration-300 group-hover:scale-105"
+          className="h-[300px] w-full object-cover brightness-[0.78] contrast-[1.12] saturate-[0.88] transition duration-500 group-hover:scale-[1.08]"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/20 to-transparent" />
         {product.isNew && (
-          <span className="absolute right-4 top-4 rounded-full bg-[#ff4d4d] px-3 py-1 text-[0.75rem] font-semibold text-white">
+          <span className="motion-float absolute right-4 top-4 rounded-full bg-[#ff4d4d] px-3 py-1 text-[0.75rem] font-semibold text-white">
             New
           </span>
         )}

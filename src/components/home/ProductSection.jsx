@@ -27,7 +27,7 @@ function ProductSection({
 
   return (
     <section aria-labelledby="featured-title">
-      <div className="mb-8 flex items-end justify-between gap-4">
+      <div className="motion-fade-up mb-8 flex items-end justify-between gap-4">
         <div>
           <h2
             id="featured-title"
@@ -43,12 +43,12 @@ function ProductSection({
       </div>
 
       <div className="mb-8 grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-6">
-        <label className="flex flex-col gap-2">
+        <label className="motion-fade-up flex flex-col gap-2" style={{ animationDelay: '80ms' }}>
           <span className="text-[0.78rem] uppercase tracking-[0.12em] text-zinc-400">Category</span>
           <select
             value={selectedCategory}
             onChange={(event) => onCategoryChange(event.target.value)}
-            className="rounded-xl border border-white/10 bg-zinc-900 px-3 py-2.5 text-[0.9rem] text-white outline-none transition focus:border-white/30"
+            className="rounded-xl border border-white/10 bg-zinc-900 px-3 py-2.5 text-[0.9rem] text-white outline-none transition focus:scale-[1.02] focus:border-white/30"
           >
             {categories.map((categoryItem) => (
               <option key={categoryItem.id} value={categoryItem.id}>
@@ -58,12 +58,12 @@ function ProductSection({
           </select>
         </label>
 
-        <label className="flex flex-col gap-2">
+        <label className="motion-fade-up flex flex-col gap-2" style={{ animationDelay: '130ms' }}>
           <span className="text-[0.78rem] uppercase tracking-[0.12em] text-zinc-400">Sort</span>
           <select
             value={sortOption}
             onChange={(event) => onSortChange(event.target.value)}
-            className="rounded-xl border border-white/10 bg-zinc-900 px-3 py-2.5 text-[0.9rem] text-white outline-none transition focus:border-white/30"
+            className="rounded-xl border border-white/10 bg-zinc-900 px-3 py-2.5 text-[0.9rem] text-white outline-none transition focus:scale-[1.02] focus:border-white/30"
           >
             <option value="newest">Newest</option>
             <option value="price-asc">Price: Low to High</option>
@@ -73,7 +73,7 @@ function ProductSection({
           </select>
         </label>
 
-        <label className="flex flex-col gap-2">
+        <label className="motion-fade-up flex flex-col gap-2" style={{ animationDelay: '180ms' }}>
           <span className="text-[0.78rem] uppercase tracking-[0.12em] text-zinc-400">Min Price</span>
           <input
             type="number"
@@ -81,11 +81,11 @@ function ProductSection({
             value={minPrice}
             onChange={(event) => onMinPriceChange(event.target.value)}
             placeholder="0"
-            className="rounded-xl border border-white/10 bg-zinc-900 px-3 py-2.5 text-[0.9rem] text-white outline-none transition placeholder:text-zinc-500 focus:border-white/30"
+            className="rounded-xl border border-white/10 bg-zinc-900 px-3 py-2.5 text-[0.9rem] text-white outline-none transition placeholder:text-zinc-500 focus:scale-[1.02] focus:border-white/30"
           />
         </label>
 
-        <label className="flex flex-col gap-2">
+        <label className="motion-fade-up flex flex-col gap-2" style={{ animationDelay: '230ms' }}>
           <span className="text-[0.78rem] uppercase tracking-[0.12em] text-zinc-400">Max Price</span>
           <input
             type="number"
@@ -93,11 +93,11 @@ function ProductSection({
             value={maxPrice}
             onChange={(event) => onMaxPriceChange(event.target.value)}
             placeholder="500"
-            className="rounded-xl border border-white/10 bg-zinc-900 px-3 py-2.5 text-[0.9rem] text-white outline-none transition placeholder:text-zinc-500 focus:border-white/30"
+            className="rounded-xl border border-white/10 bg-zinc-900 px-3 py-2.5 text-[0.9rem] text-white outline-none transition placeholder:text-zinc-500 focus:scale-[1.02] focus:border-white/30"
           />
         </label>
 
-        <label className="flex items-end pb-2">
+        <label className="motion-fade-up flex items-end pb-2" style={{ animationDelay: '280ms' }}>
           <span className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-zinc-900 px-3 py-2.5 text-[0.9rem] text-white">
             <input
               type="checkbox"
@@ -109,12 +109,12 @@ function ProductSection({
           </span>
         </label>
 
-        <div className="flex items-end">
+        <div className="motion-fade-up flex items-end" style={{ animationDelay: '330ms' }}>
           <button
             type="button"
             onClick={onClearFilters}
             disabled={!hasActiveFilters}
-            className="w-full rounded-xl border border-white/20 bg-zinc-900 px-4 py-2.5 text-[0.9rem] font-medium text-white transition hover:border-white/40 disabled:cursor-not-allowed disabled:opacity-40"
+            className="motion-button w-full rounded-xl border border-white/20 bg-zinc-900 px-4 py-2.5 text-[0.9rem] font-medium text-white hover:border-white/40 disabled:cursor-not-allowed disabled:opacity-40"
           >
             Clear Filters
           </button>
@@ -122,19 +122,19 @@ function ProductSection({
       </div>
 
       {isLoading ? (
-        <p className="rounded-2xl border border-white/10 bg-zinc-950/70 px-5 py-8 text-center text-zinc-300">
+        <p className="motion-loading rounded-2xl border border-white/10 px-5 py-8 text-center text-zinc-200">
           Searching products...
         </p>
       ) : null}
 
       {!isLoading && errorMessage ? (
-        <p className="rounded-2xl border border-red-500/25 bg-red-950/30 px-5 py-8 text-center text-red-200">
+        <p className="motion-fade-up rounded-2xl border border-red-500/25 bg-red-950/30 px-5 py-8 text-center text-red-200">
           {errorMessage}
         </p>
       ) : null}
 
       {!isLoading && !errorMessage && products.length === 0 ? (
-        <p className="rounded-2xl border border-white/10 bg-zinc-950/70 px-5 py-8 text-center text-zinc-300">
+        <p className="motion-fade-up rounded-2xl border border-white/10 bg-zinc-950/70 px-5 py-8 text-center text-zinc-300">
           {hasActiveSearch
             ? `No products found for "${searchTerm}". Try another keyword.`
             : hasActiveFilters
@@ -145,8 +145,8 @@ function ProductSection({
 
       {!isLoading && !errorMessage && products.length > 0 ? (
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-4">
-          {products.map((product) => (
-            <ProductCard key={product.id ?? product._id} product={product} />
+          {products.map((product, index) => (
+            <ProductCard key={product.id ?? product._id} product={product} index={index} />
           ))}
         </div>
       ) : null}
@@ -156,7 +156,7 @@ function ProductSection({
           <button
             type="button"
             onClick={onLoadMore}
-            className="rounded-2xl border border-zinc-700 px-9 py-3.5 text-[0.95rem] font-semibold text-white transition hover:border-zinc-500 hover:bg-zinc-900"
+            className="motion-button rounded-2xl border border-zinc-700 px-9 py-3.5 text-[0.95rem] font-semibold text-white hover:border-zinc-500 hover:bg-zinc-900"
           >
             Load More
           </button>

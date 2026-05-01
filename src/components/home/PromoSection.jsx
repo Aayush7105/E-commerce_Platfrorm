@@ -1,10 +1,10 @@
 function PromoSection() {
   return (
     <section
-      className="rounded-[28px] border border-white/15 bg-gradient-to-r from-zinc-900 to-zinc-950 px-6 py-12 sm:px-10"
+      className="motion-glow-panel motion-fade-up rounded-[28px] border border-white/15 bg-gradient-to-r from-zinc-900 to-zinc-950 px-6 py-12 sm:px-10"
       aria-labelledby="newsletter-title"
     >
-      <div className="max-w-4xl">
+      <div className="relative max-w-4xl">
         <h2
           id="newsletter-title"
           className="m-0 text-[clamp(1.8rem,3.8vw,3.1rem)] leading-tight font-semibold tracking-[-0.02em]"
@@ -18,7 +18,7 @@ function PromoSection() {
       </div>
 
       <form
-        className="mt-8 flex w-full max-w-5xl flex-col gap-4 sm:flex-row"
+        className="motion-fade-up motion-delay-1 relative mt-8 flex w-full max-w-5xl flex-col gap-4 sm:flex-row"
         onSubmit={(event) => event.preventDefault()}
       >
         <label htmlFor="newsletter-email" className="sr-only">
@@ -32,7 +32,7 @@ function PromoSection() {
         />
         <button
           type="submit"
-          className="h-14 rounded-2xl bg-white px-7 text-[0.95rem] font-semibold text-black transition hover:bg-zinc-200"
+          className="motion-button h-14 rounded-2xl bg-white px-7 text-[0.95rem] font-semibold text-black hover:bg-zinc-200"
         >
           Subscribe
         </button>

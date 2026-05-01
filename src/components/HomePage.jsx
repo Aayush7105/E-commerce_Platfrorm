@@ -143,7 +143,7 @@ function HomePage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white antialiased [font-family:'Poppins',sans-serif]">
+    <div className="motion-page min-h-screen bg-[#050505] text-white antialiased [font-family:'Poppins',sans-serif]">
       <Header links={navLinks} cartCount={0} searchTerm={searchTerm} onSearchChange={setSearchTerm} />
       <HeroSection stats={heroStats} />
       <main className="mx-auto flex w-full max-w-[1440px] flex-col gap-24 px-4 pb-20 pt-16 sm:px-8">

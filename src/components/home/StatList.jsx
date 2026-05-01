@@ -2,8 +2,12 @@ function StatList({ stats }) {
   return (
     <section aria-label="Store highlights">
       <ul className="m-0 grid list-none gap-6 p-0 text-left md:grid-cols-3 md:text-center">
-        {stats.map((stat) => (
-          <li key={stat.label}>
+        {stats.map((stat, index) => (
+          <li
+            key={stat.label}
+            className="motion-fade-up"
+            style={{ animationDelay: `${420 + index * 90}ms` }}
+          >
             <strong className="block text-[clamp(1.5rem,2.2vw,2.1rem)] leading-none font-semibold text-white">
               {stat.value}
             </strong>

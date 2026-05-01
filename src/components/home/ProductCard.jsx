@@ -22,7 +22,7 @@ const formatPrice = (value) => {
   return currencyFormatter.format(Number.isFinite(numericPrice) ? numericPrice : 0)
 }
 
-function ProductCard({ product }) {
+function ProductCard({ product, index = 0 }) {
   const rating = clampRating(product.rating)
   const filledStarCount = Math.round(rating)
   const ratingLabel = formatRating(product.rating)
@@ -31,17 +31,17 @@ function ProductCard({ product }) {
     typeof product.category === 'string' && product.category.trim() ? product.category : 'General'
 
   return (
-    <article>
-      <div className="group relative overflow-hidden rounded-2xl border border-white/10 bg-zinc-950">
+    <article className="motion-card" style={{ animationDelay: `${index * 70}ms` }}>
+      <div className="motion-hover-lift group relative overflow-hidden rounded-2xl border border-white/10 bg-zinc-950 hover:border-white/20">
         <WishlistToggleButton product={product} />
         <img
           src={product.image}
           alt={productName}
-          className="h-[330px] w-full object-cover transition duration-300 group-hover:scale-105"
+          className="h-[330px] w-full object-cover transition duration-500 group-hover:scale-[1.08]"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/25 to-transparent" />
         {product.isNew && (
-          <span className="absolute right-4 top-4 rounded-full bg-[#ff4d4d] px-3 py-1 text-[0.82rem] font-semibold text-white">
+          <span className="motion-float absolute right-4 top-4 rounded-full bg-[#ff4d4d] px-3 py-1 text-[0.82rem] font-semibold text-white">
             New
           </span>
         )}
