@@ -2,6 +2,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import HomePage from './components/HomePage'
 import AboutPage from './components/pages/AboutPage'
 import BestSellersPage from './components/pages/BestSellersPage'
+import ComparePage from './components/pages/ComparePage'
 import CollectionsPage from './components/pages/CollectionsPage'
 import ContactPage from './components/pages/ContactPage'
 import FaqPage from './components/pages/FaqPage'
@@ -24,6 +25,7 @@ function App() {
         <Route path="/faq" element={<FaqPage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/wishlist" element={<WishlistPage />} />
+        <Route path="/compare" element={<ComparePage />} />
         <Route path="/products/:productId" element={<ProductDetailPage />} />
         <Route path="/home" element={<Navigate to="/" replace />} />
         <Route path="*" element={<NotFoundPage />} />

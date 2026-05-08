@@ -3,6 +3,7 @@ import { FiEye, FiShoppingBag } from 'react-icons/fi'
 import { Link } from 'react-router-dom'
 import { useCart } from '../cart/useCart'
 import { useToast } from '../ui/useToast'
+import CompareToggleButton from './CompareToggleButton'
 import WishlistToggleButton from './WishlistToggleButton'
 
 const getProductId = (product) => {
@@ -66,7 +67,7 @@ function CategoryCard({ product, index = 0 }) {
         <span>({product.rating})</span>
       </p>
       <p className="mt-4 text-[clamp(1.35rem,1.65vw,1.7rem)] leading-none font-semibold">${product.price}</p>
-      <div className="mt-5 grid grid-cols-[minmax(0,1fr)_3.25rem] gap-2">
+      <div className="mt-5 grid grid-cols-[minmax(0,1fr)_3.25rem_3.25rem] gap-2">
         <button
           type="button"
           onClick={handleAddToCart}
@@ -83,6 +84,7 @@ function CategoryCard({ product, index = 0 }) {
         >
           <FiEye className="h-4 w-4" aria-hidden="true" />
         </Link>
+        <CompareToggleButton product={product} className="h-12 w-full rounded-2xl" />
       </div>
     </article>
   )

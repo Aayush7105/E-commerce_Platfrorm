@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
-import { FiHeart, FiMenu, FiSearch, FiShoppingBag, FiX } from 'react-icons/fi'
+import { FiColumns, FiHeart, FiMenu, FiSearch, FiShoppingBag, FiX } from 'react-icons/fi'
 import { Link, NavLink } from 'react-router-dom'
+import { getCompareItems, subscribeToCompareItems } from '../../utils/compare'
 import { getWishlistItems, subscribeToWishlist } from '../../utils/wishlist'
 import { useCart } from '../cart/useCart'
 
@@ -13,13 +14,21 @@ function Header({
 }) {
   const { openCart, totalQuantity } = useCart()
   const [wishlistItems, setWishlistItems] = useState(() => getWishlistItems())
+  const [compareItems, setCompareItems] = useState(() => getCompareItems())
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const wishlistCount = wishlistItems.length
+  const compareCount = compareItems.length
   const displayedCartCount = totalQuantity || cartCount
 
   useEffect(() => {
     return subscribeToWishlist((items) => {
       setWishlistItems(items)
+    })
+  }, [])
+
+  useEffect(() => {
+    return subscribeToCompareItems((items) => {
+      setCompareItems(items)
     })
   }, [])
 
@@ -124,6 +133,18 @@ function Header({
               {wishlistCount > 0 ? (
                 <span className="absolute -right-1 -top-1 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1 text-[0.72rem] font-bold text-white">
                   {wishlistCount}
+                </span>
+              ) : null}
+            </Link>
+            <Link
+              to="/compare"
+              aria-label="Compare products"
+              className="motion-icon-button relative rounded-md p-2 text-zinc-300 hover:bg-white/10 hover:text-white"
+            >
+              <FiColumns className="h-[1.1rem] w-[1.1rem]" />
+              {compareCount > 0 ? (
+                <span className="absolute -right-1 -top-1 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-emerald-500 px-1 text-[0.72rem] font-bold text-white">
+                  {compareCount}
                 </span>
               ) : null}
             </Link>
@@ -235,6 +256,19 @@ function Header({
                 </span>
                 <span className="rounded-full bg-white px-2 py-0.5 text-[0.8rem] font-bold text-black">
                   {wishlistCount}
+                </span>
+              </Link>
+              <Link
+                to="/compare"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="motion-button flex items-center justify-between rounded-2xl border border-white/10 bg-zinc-900 px-4 py-3 text-white no-underline hover:bg-zinc-800"
+              >
+                <span className="inline-flex items-center gap-3 font-semibold">
+                  <FiColumns className="h-4 w-4" />
+                  Compare
+                </span>
+                <span className="rounded-full bg-white px-2 py-0.5 text-[0.8rem] font-bold text-black">
+                  {compareCount}
                 </span>
               </Link>
               <button

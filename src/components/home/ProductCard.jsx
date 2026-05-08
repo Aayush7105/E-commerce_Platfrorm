@@ -2,6 +2,7 @@ import { FiEye, FiShoppingBag, FiStar } from 'react-icons/fi'
 import { Link } from 'react-router-dom'
 import { useCart } from '../cart/useCart'
 import { useToast } from '../ui/useToast'
+import CompareToggleButton from './CompareToggleButton'
 import WishlistToggleButton from './WishlistToggleButton'
 
 const currencyFormatter = new Intl.NumberFormat('en-US', {
@@ -96,7 +97,7 @@ function ProductCard({ product, index = 0 }) {
       <p className="mt-3 text-[clamp(1.3rem,1.6vw,1.7rem)] leading-none font-semibold">
         {formatPrice(product.price)}
       </p>
-      <div className="mt-4 grid grid-cols-[minmax(0,1fr)_3.25rem] gap-2">
+      <div className="mt-4 grid grid-cols-[minmax(0,1fr)_3.25rem_3.25rem] gap-2">
         <button
           type="button"
           onClick={handleAddToCart}
@@ -113,6 +114,7 @@ function ProductCard({ product, index = 0 }) {
         >
           <FiEye className="h-4 w-4" aria-hidden="true" />
         </Link>
+        <CompareToggleButton product={product} className="h-12 w-full rounded-2xl" />
       </div>
     </article>
   )
