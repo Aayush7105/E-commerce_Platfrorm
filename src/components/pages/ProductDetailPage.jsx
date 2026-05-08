@@ -4,6 +4,7 @@ import { Link, useParams } from 'react-router-dom'
 import { addRecentlyViewedProduct } from '../../utils/recentlyViewed'
 import { useCart } from '../cart/useCart'
 import { featuredCollections, footerColumns, navLinks, newArrivals } from '../home/homeData'
+import CompareToggleButton from '../home/CompareToggleButton'
 import Footer from '../home/Footer'
 import Header from '../home/Header'
 import RecentlyViewedSection from '../home/RecentlyViewedSection'
@@ -285,7 +286,7 @@ function ProductDetailPage() {
                   </span>
                 </div>
 
-                <div className="mt-8 grid gap-3 sm:grid-cols-[9.5rem_minmax(0,1fr)]">
+                <div className="mt-8 grid gap-3 sm:grid-cols-[9.5rem_minmax(0,1fr)_3.5rem]">
                   <div className="inline-flex h-14 items-center rounded-2xl border border-white/10 bg-zinc-950">
                     <button
                       type="button"
@@ -315,6 +316,7 @@ function ProductDetailPage() {
                     <FiShoppingBag className="h-4 w-4" aria-hidden="true" />
                     Add to Cart
                   </button>
+                  <CompareToggleButton product={product} className="h-14 w-full rounded-2xl" />
                 </div>
 
                 <div className="mt-8 grid gap-3 sm:grid-cols-3">
