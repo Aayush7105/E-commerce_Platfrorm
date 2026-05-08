@@ -57,10 +57,10 @@ const formatRating = (value) => {
   return Number.isInteger(rating) ? String(rating) : rating.toFixed(1)
 }
 
-function DetailFeature({ icon: Icon, title, text }) {
+function DetailFeature({ icon, title, text }) {
   return (
     <article className="rounded-2xl border border-white/10 bg-zinc-950/70 p-4">
-      <Icon className="h-5 w-5 text-zinc-200" aria-hidden="true" />
+      {icon}
       <h3 className="mt-3 text-[0.98rem] font-semibold text-white">{title}</h3>
       <p className="mt-1 text-[0.86rem] leading-relaxed text-zinc-400">{text}</p>
     </article>
@@ -319,17 +319,17 @@ function ProductDetailPage() {
 
                 <div className="mt-8 grid gap-3 sm:grid-cols-3">
                   <DetailFeature
-                    icon={FiTruck}
+                    icon={<FiTruck className="h-5 w-5 text-zinc-200" aria-hidden="true" />}
                     title="Fast Delivery"
                     text="Free shipping unlocks automatically on qualifying orders."
                   />
                   <DetailFeature
-                    icon={FiShield}
+                    icon={<FiShield className="h-5 w-5 text-zinc-200" aria-hidden="true" />}
                     title="Secure Checkout"
                     text="Cart totals are estimated before payment and address screens."
                   />
                   <DetailFeature
-                    icon={FiPackage}
+                    icon={<FiPackage className="h-5 w-5 text-zinc-200" aria-hidden="true" />}
                     title="Premium Pack"
                     text="Every item ships with careful LUXE packaging."
                   />
