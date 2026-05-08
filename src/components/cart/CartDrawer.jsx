@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { FiMinus, FiPlus, FiShoppingBag, FiTrash2, FiX } from 'react-icons/fi'
 import { useToast } from '../ui/useToast'
 import { useCart } from './useCart'
@@ -9,6 +9,19 @@ const currencyFormatter = new Intl.NumberFormat('en-US', {
 })
 
 const formatPrice = (value) => currencyFormatter.format(Number.isFinite(Number(value)) ? Number(value) : 0)
+const FREE_SHIPPING_THRESHOLD = 200
+const STANDARD_SHIPPING_FEE = 12
+const ESTIMATED_TAX_RATE = 0.08
+const PROMO_CODES = {
+  LUXE10: {
+    label: 'LUXE10',
+    rate: 0.1,
+  },
+  WELCOME15: {
+    label: 'WELCOME15',
+    rate: 0.15,
+  },
+}
 
 function CartDrawer() {
   const {
@@ -22,6 +35,26 @@ function CartDrawer() {
     clearCart,
   } = useCart()
   const { showToast } = useToast()
+  const [promoInput, setPromoInput] = useState('')
+  const [appliedPromoCode, setAppliedPromoCode] = useState('')
+
+  const orderSummary = useMemo(() => {
+    const promo = PROMO_CODES[appliedPromoCode]
+    const discount = promo ? subtotal * promo.rate : 0
+    const discountedSubtotal = Math.max(subtotal - discount, 0)
+    const shipping = items.length === 0 || discountedSubtotal >= FREE_SHIPPING_THRESHOLD ? 0 : STANDARD_SHIPPING_FEE
+    const estimatedTax = discountedSubtotal * ESTIMATED_TAX_RATE
+    const total = discountedSubtotal + shipping + estimatedTax
+    const freeShippingRemaining = Math.max(FREE_SHIPPING_THRESHOLD - discountedSubtotal, 0)
+
+    return {
+      discount,
+      estimatedTax,
+      freeShippingRemaining,
+      shipping,
+      total,
+    }
+  }, [appliedPromoCode, items.length, subtotal])
 
   useEffect(() => {
     if (!isCartOpen) {
@@ -69,6 +102,8 @@ function CartDrawer() {
 
   const handleClearCart = () => {
     clearCart()
+    setAppliedPromoCode('')
+    setPromoInput('')
     showToast({
       title: 'Cart cleared',
       message: 'Your shopping bag is empty again.',
@@ -79,8 +114,60 @@ function CartDrawer() {
   const handleCheckout = () => {
     showToast({
       title: 'Checkout flow coming next',
-      message: 'Your cart is ready for payment and address screens.',
+      message: `Estimated total: ${formatPrice(orderSummary.total)}.`,
       type: 'success',
+    })
+  }
+
+  const handleApplyPromo = (event) => {
+    event.preventDefault()
+
+    const normalizedCode = promoInput.trim().toUpperCase()
+    const promo = PROMO_CODES[normalizedCode]
+
+    if (!items.length) {
+      showToast({
+        title: 'Cart is empty',
+        message: 'Add a product before applying a promo code.',
+        type: 'info',
+      })
+      return
+    }
+
+    if (!normalizedCode) {
+      showToast({
+        title: 'Enter a promo code',
+        message: 'Try LUXE10 or WELCOME15.',
+        type: 'info',
+      })
+      return
+    }
+
+    if (!promo) {
+      showToast({
+        title: 'Promo code not found',
+        message: 'Try LUXE10 or WELCOME15.',
+        type: 'info',
+      })
+      return
+    }
+
+    setAppliedPromoCode(promo.label)
+    setPromoInput(promo.label)
+    showToast({
+      title: 'Promo applied',
+      message: `${Math.round(promo.rate * 100)}% discount added to your bag.`,
+      type: 'success',
+    })
+  }
+
+  const handleRemovePromo = () => {
+    setAppliedPromoCode('')
+    setPromoInput('')
+    showToast({
+      title: 'Promo removed',
+      message: 'Your cart total has been updated.',
+      type: 'info',
     })
   }
 
@@ -201,9 +288,71 @@ function CartDrawer() {
               Clear cart
             </button>
           ) : null}
-          <div className="flex items-center justify-between gap-4">
-            <span className="text-[0.95rem] text-zinc-400">Subtotal</span>
-            <strong className="text-[1.45rem] leading-none text-white">{formatPrice(subtotal)}</strong>
+
+          {items.length > 0 ? (
+            <div className="mb-5 rounded-2xl border border-white/10 bg-zinc-950/70 p-4">
+              <div className="mb-3 flex items-center justify-between gap-4">
+                <span className="text-[0.88rem] font-medium text-zinc-300">Promo code</span>
+                {appliedPromoCode ? (
+                  <button
+                    type="button"
+                    onClick={handleRemovePromo}
+                    className="text-[0.8rem] font-medium text-zinc-400 transition hover:text-white"
+                  >
+                    Remove
+                  </button>
+                ) : null}
+              </div>
+              <form className="grid grid-cols-[minmax(0,1fr)_5.5rem] gap-2" onSubmit={handleApplyPromo}>
+                <input
+                  type="text"
+                  value={promoInput}
+                  onChange={(event) => setPromoInput(event.target.value)}
+                  placeholder="LUXE10"
+                  className="h-11 min-w-0 rounded-xl border border-white/10 bg-black px-3 text-[0.9rem] uppercase text-white outline-none placeholder:text-zinc-600 focus:border-white/35"
+                />
+                <button
+                  type="submit"
+                  className="motion-button h-11 rounded-xl bg-white px-3 text-[0.88rem] font-semibold text-black hover:bg-zinc-200"
+                >
+                  Apply
+                </button>
+              </form>
+              {orderSummary.freeShippingRemaining > 0 ? (
+                <p className="mt-3 text-[0.82rem] leading-relaxed text-zinc-400">
+                  Add {formatPrice(orderSummary.freeShippingRemaining)} more for free shipping.
+                </p>
+              ) : (
+                <p className="mt-3 text-[0.82rem] leading-relaxed text-emerald-200">
+                  Free shipping is unlocked for this order.
+                </p>
+              )}
+            </div>
+          ) : null}
+
+          <div className="grid gap-2 text-[0.9rem]">
+            <div className="flex items-center justify-between gap-4 text-zinc-400">
+              <span>Subtotal</span>
+              <span>{formatPrice(subtotal)}</span>
+            </div>
+            {orderSummary.discount > 0 ? (
+              <div className="flex items-center justify-between gap-4 text-emerald-200">
+                <span>Discount</span>
+                <span>-{formatPrice(orderSummary.discount)}</span>
+              </div>
+            ) : null}
+            <div className="flex items-center justify-between gap-4 text-zinc-400">
+              <span>Shipping</span>
+              <span>{orderSummary.shipping > 0 ? formatPrice(orderSummary.shipping) : 'Free'}</span>
+            </div>
+            <div className="flex items-center justify-between gap-4 text-zinc-400">
+              <span>Estimated tax</span>
+              <span>{formatPrice(orderSummary.estimatedTax)}</span>
+            </div>
+            <div className="mt-2 flex items-center justify-between gap-4 border-t border-white/10 pt-3">
+              <span className="text-[0.95rem] text-zinc-300">Estimated total</span>
+              <strong className="text-[1.45rem] leading-none text-white">{formatPrice(orderSummary.total)}</strong>
+            </div>
           </div>
           <button
             type="button"
