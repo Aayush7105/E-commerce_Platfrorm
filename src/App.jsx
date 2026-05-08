@@ -7,6 +7,7 @@ import ContactPage from './components/pages/ContactPage'
 import FaqPage from './components/pages/FaqPage'
 import NewArrivalsPage from './components/pages/NewArrivalsPage'
 import NotFoundPage from './components/pages/NotFoundPage'
+import ProductDetailPage from './components/pages/ProductDetailPage'
 import SalePage from './components/pages/SalePage'
 import WishlistPage from './components/pages/WishlistPage'
 
@@ -23,6 +24,7 @@ function App() {
         <Route path="/faq" element={<FaqPage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/wishlist" element={<WishlistPage />} />
+        <Route path="/products/:productId" element={<ProductDetailPage />} />
         <Route path="/home" element={<Navigate to="/" replace />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>

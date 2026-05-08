@@ -5,6 +5,7 @@ import CategorySection from './home/CategorySection'
 import ProductSection from './home/ProductSection'
 import PromoSection from './home/PromoSection'
 import Footer from './home/Footer'
+import RecentlyViewedSection from './home/RecentlyViewedSection'
 import {
   navLinks,
   heroStats,
@@ -170,6 +171,7 @@ function HomePage() {
           onLoadMore={() => setVisibleProductsCount((currentValue) => currentValue + DEFAULT_VISIBLE_PRODUCTS)}
         />
         <PromoSection />
+        <RecentlyViewedSection />
       </main>
       <Footer columns={footerColumns} />
     </div>

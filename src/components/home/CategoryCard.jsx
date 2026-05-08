@@ -1,12 +1,24 @@
 import { FaStar } from 'react-icons/fa'
-import { FiShoppingBag } from 'react-icons/fi'
+import { FiEye, FiShoppingBag } from 'react-icons/fi'
+import { Link } from 'react-router-dom'
 import { useCart } from '../cart/useCart'
 import { useToast } from '../ui/useToast'
 import WishlistToggleButton from './WishlistToggleButton'
 
+const getProductId = (product) => {
+  if (!product || typeof product !== 'object') {
+    return ''
+  }
+
+  const rawId = product._id ?? product.id
+  return rawId === undefined || rawId === null ? '' : String(rawId)
+}
+
 function CategoryCard({ product, index = 0 }) {
   const { addCartItem } = useCart()
   const { showToast } = useToast()
+  const productId = getProductId(product)
+  const productDetailPath = productId ? `/products/${encodeURIComponent(productId)}` : '/collections'
 
   const handleAddToCart = () => {
     const cartItem = addCartItem(product)
@@ -54,14 +66,24 @@ function CategoryCard({ product, index = 0 }) {
         <span>({product.rating})</span>
       </p>
       <p className="mt-4 text-[clamp(1.35rem,1.65vw,1.7rem)] leading-none font-semibold">${product.price}</p>
-      <button
-        type="button"
-        onClick={handleAddToCart}
-        className="motion-button mt-5 inline-flex h-12 w-full items-center justify-center gap-2 rounded-2xl border border-white/15 bg-zinc-900 px-5 text-[0.95rem] font-semibold text-white hover:border-white/30 hover:bg-zinc-800"
-      >
-        <FiShoppingBag className="h-4 w-4" aria-hidden="true" />
-        Add to Cart
-      </button>
+      <div className="mt-5 grid grid-cols-[minmax(0,1fr)_3.25rem] gap-2">
+        <button
+          type="button"
+          onClick={handleAddToCart}
+          className="motion-button inline-flex h-12 items-center justify-center gap-2 rounded-2xl border border-white/15 bg-zinc-900 px-5 text-[0.95rem] font-semibold text-white hover:border-white/30 hover:bg-zinc-800"
+        >
+          <FiShoppingBag className="h-4 w-4" aria-hidden="true" />
+          Add
+        </button>
+        <Link
+          to={productDetailPath}
+          title={`View details for ${product.name}`}
+          aria-label={`View details for ${product.name}`}
+          className="motion-icon-button inline-flex h-12 w-full items-center justify-center rounded-2xl border border-white/15 bg-zinc-900 text-white no-underline hover:border-white/35 hover:bg-zinc-800"
+        >
+          <FiEye className="h-4 w-4" aria-hidden="true" />
+        </Link>
+      </div>
     </article>
   )
 }
